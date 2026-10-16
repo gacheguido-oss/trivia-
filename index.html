@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10151c">
+  <title>Trivia Quest | Desafía tu mente</title>
+  <link rel="stylesheet" href="stile.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="logo" id="logo">
+      <span class="logo-icon">✦</span>
+      TRIVIA<span class="accent">QUEST</span>
+    </a>
+    <span class="header-tag">KNOWLEDGE CHALLENGE</span>
+  </header>
+
+  <main class="container">
+    <section id="setup" class="panel setup-panel">
+      <div class="hero-icon">🧠</div>
+      <p class="eyebrow">PON A PRUEBA TU CONOCIMIENTO</p>
+      <h1>¿Cuánto sabes <span>realmente?</span></h1>
+      <p class="description">
+        Elige tu desafío, responde las preguntas y demuestra de qué estás hecho.
+      </p>
+
+      <form id="setup-form">
+        <div class="form-grid">
+          <div class="field">
+            <label for="category">Categoría</label>
+            <select id="category">
+              <option value="">Todas las categorías</option>
+              <option value="9">Conocimiento general</option>
+              <option value="10">Libros</option>
+              <option value="11">Películas</option>
+              <option value="12">Música</option>
+              <option value="14">Televisión</option>
+              <option value="15">Videojuegos</option>
+              <option value="17">Ciencia y naturaleza</option>
+              <option value="18">Informática</option>
+              <option value="19">Matemáticas</option>
+              <option value="21">Deportes</option>
+              <option value="22">Geografía</option>
+              <option value="23">Historia</option>
+              <option value="27">Animales</option>
+              <option value="31">Anime y manga</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="difficulty">Dificultad</label>
+            <select id="difficulty">
+              <option value="">Todas las dificultades</option>
+              <option value="easy">Fácil</option>
+              <option value="medium" selected>Intermedia</option>
+              <option value="hard">Difícil</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="amount">Cantidad de preguntas</label>
+            <select id="amount">
+              <option value="5">5 preguntas</option>
+              <option value="10" selected>10 preguntas</option>
+              <option value="15">15 preguntas</option>
+              <option value="20">20 preguntas</option>
+              <option value="30">30 preguntas</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="type">Tipo de respuesta</label>
+            <select id="type">
+              <option value="multiple">Opción múltiple</option>
+              <option value="boolean">Verdadero o falso</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="challenge-info">
+          <span>⚡ Puntuación por acierto</span>
+          <strong id="points-preview">20 puntos</strong>
+        </div>
+
+        <button type="submit" class="primary-button" id="start-button">
+          Comenzar desafío <span>→</span>
+        </button>
+      </form>
+
+      <p class="api-credit">
+        Preguntas proporcionadas por
+        <a href="https://opentdb.com/" target="_blank" rel="noopener noreferrer">
+          Open Trivia Database
+        </a>
+      </p>
+    </section>
+
+    <section id="game" class="panel game-panel" hidden>
+      <div class="game-top">
+        <span id="category-label" class="category-badge">Categoría</span>
+        <span id="difficulty-label" class="difficulty-badge">Intermedia</span>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <span>PROGRESO</span>
+          <strong id="progress-text">01 / 10</strong>
+        </div>
+        <div class="stat">
+          <span>PUNTOS</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="stat">
+          <span>ACIERTOS</span>
+          <strong id="correct-count">0</strong>
+        </div>
+      </div>
+
+      <div class="progress-track">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+
+      <div class="question-area">
+        <p id="question-category" class="question-category"></p>
+        <h2 id="question">Cargando pregunta...</h2>
+        <p id="answer-hint" class="answer-hint">
+          Selecciona una respuesta para continuar.
+        </p>
+      </div>
+
+      <div id="answers" class="answers"></div>
+
+      <div id="feedback" class="feedback" role="status" hidden></div>
+
+      <button id="next-button" class="primary-button" disabled>
+        Siguiente pregunta →
+      </button>
+
+      <button id="quit-button" class="quit-button">
+        Abandonar desafío
+      </button>
+    </section>
+
+    <section id="result" class="panel result-panel" hidden>
+      <div id="result-icon" class="result-icon">🏆</div>
+      <p class="eyebrow">DESAFÍO COMPLETADO</p>
+      <h1 id="result-title">¡Buen trabajo!</h1>
+      <p id="result-message" class="description"></p>
+
+      <div class="final-score">
+        <span>PUNTUACIÓN FINAL</span>
+        <strong id="final-score">0</strong>
+        <span id="max-score">de 200 puntos</span>
+      </div>
+
+      <div class="result-stats">
+        <div>
+          <strong id="final-correct">0</strong>
+          <span>Correctas</span>
+        </div>
+        <div>
+          <strong id="final-wrong">0</strong>
+          <span>Incorrectas</span>
+        </div>
+        <div>
+          <strong id="final-percent">0%</strong>
+          <span>Precisión</span>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button id="retry-button" class="primary-button">
+          Jugar otra vez ↻
+        </button>
+        <button id="config-button" class="secondary-button">
+          Cambiar configuración
+        </button>
+      </div>
+
+      <p class="api-credit">
+        Sigue aprendiendo, una pregunta a la vez.
+      </p>
+    </section>
+
+    <div id="loading" class="loading" hidden>
+      <div class="spinner"></div>
+      <h2>Preparando el desafío...</h2>
+      <p>Buscando preguntas para poner a prueba tu mente.</p>
+    </div>
+
+    <div id="error" class="error-box" hidden>
+      <h2>¡Ups! Algo salió mal</h2>
+      <p id="error-message"></p>
+      <button id="back-button" class="secondary-button">
+        Volver a configurar
+      </button>
+    </div>
+
+    <footer>
+      <span>TRIVIA QUEST</span>
+      <span>Hecho para mentes curiosas ✦</span>
+    </footer>
+  </main>
+</body>
+</html>
